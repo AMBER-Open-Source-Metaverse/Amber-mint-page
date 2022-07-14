@@ -36,7 +36,7 @@
     "@types/react-helmet": "^6.1.5",
     "autoprefixer": "^10.4.7",
     "create-validator-ts": "^3.0.1",
-    "gatsby": "^4.12.1",
+    "gatsby": "^4.13.1",
     "gatsby-plugin-dts-css-modules": "^2.2.0",
     "gatsby-plugin-extract-schema": "^0.2.1",
     "gatsby-plugin-gatsby-cloud": "^4.5.2",
