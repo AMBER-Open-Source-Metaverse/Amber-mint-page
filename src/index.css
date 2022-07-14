@@ -1,7 +1,7 @@
-@import url("http://fonts.cdnfonts.com/css/sf-pro-display");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("http://fonts.cdnfonts.com/css/sf-pro-display");
 
 body {
   margin: 0;
