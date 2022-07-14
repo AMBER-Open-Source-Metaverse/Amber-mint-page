@@ -48,7 +48,7 @@ const SimpleSlider = (props: Props) => {
         },
       },
       {
-        breakpoint: 390,
+        breakpoint: 480,
         settings: {
           slidesToShow: 1.5,
           centerMode: true,

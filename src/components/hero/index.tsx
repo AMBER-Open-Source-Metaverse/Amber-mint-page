@@ -21,13 +21,23 @@ import Slider from "../pieces/Slider"
 import { SocialIcon } from "react-social-icons"
 import { useState } from "react"
 import { FaDiscord } from "react-icons/fa"
+import { isMobile } from "react-device-detect"
+
 const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
   const { locale } = useLocales()
   const { saleStatus, userStatus } = useHeroStatuses()
   const [checked, setChecked] = useState(true)
-  const handleCheckboxChange = eve => {
+
+  const onPlayGame = (eve: React.MouseEvent<HTMLInputElement>) => {
+    !isMobile
+      ? window.location.replace("http://amber.top")
+      : window.location.replace("https://testflight.apple.com/join/KHYIS8no")
+  }
+
+  const handleCheckboxChange = (eve: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(eve.target.checked)
   }
+
   return (
     <div className="bg-slate-100">
       <div
@@ -64,7 +74,7 @@ const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
                 </p>
                 <div className="flex">
                   <MintButton />
-                  <PlayButton />
+                  <PlayButton onClick={onPlayGame} />
                 </div>
               </div>
               <div className="relative">
@@ -82,7 +92,7 @@ const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
               </div>
               <div className="flex lg:hidden ">
                 <MintButton />
-                <PlayButton />
+                <PlayButton onClick={onPlayGame} />
               </div>
             </div>
             <div className="sm:flex flex-row flex-wrap justify-center mt-20 hidden">
@@ -383,24 +393,29 @@ const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
                 </div>
                 <div className="flex justify-end mt-5">
                   <MintButton />
-                  <PlayButton />
+                  <PlayButton onClick={onPlayGame} />
                 </div>
               </div>
             </div>
           </div>
 
-          <PartnersGradBack className="w-[70%] mx-auto mt-32">
+          <PartnersGradBack className="w-[70%] mx-auto mt-32 pb-[3.5rem]">
             <h1 className="text-[#05A3FF] text-[50px] font-bold my-10">
               {locale?.partners}
             </h1>
             <Image
               src={settings.partners}
               alt="Partners"
-              className="text-center"
+              className="text-center sm:block hidden"
+            />
+            <Image
+              src={settings.partnersMobile}
+              alt="Partners"
+              className="text-center sm:hiddend block"
             />
           </PartnersGradBack>
 
-          <div className="text-center mt-32 pb-4">
+          <div className="text-center mt-32 pb-4 sm:block hidden">
             <div className="flex justify-center">
               <div className="mx-10">
                 <h4 className="text-[#05A3FF] mb-5">{locale?.joinUs}</h4>

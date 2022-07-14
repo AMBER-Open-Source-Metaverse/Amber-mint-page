@@ -1,10 +1,19 @@
 import React from "react"
 import styled from "styled-components"
 
-const LoginButton: React.FC<{}> = ({ children }) => {
+interface Props {
+  onClick: () => void
+  children: any
+}
+
+const LoginButton: React.FC<Props> = props => {
   return (
-    <StyledButton type="button" className="rounded-full text-center">
-      {children}
+    <StyledButton
+      onClick={props.onClick}
+      type="button"
+      className="rounded-full text-center py-[7px] px-[1rem] sm:px-[2.75rem] mx-3"
+    >
+      {props.children}
     </StyledButton>
   )
 }
@@ -22,7 +31,6 @@ const StyledButton = styled.button`
   letter-spacing: 0.6px;
   color: white;
   margin: 0;
-  padding: 7px 2.75rem !important;
   &:hover {
     background-image: linear-gradient(
       to bottom right,
