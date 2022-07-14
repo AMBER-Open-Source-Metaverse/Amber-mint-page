@@ -230,11 +230,9 @@ const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
           </div>
 
           <div className="flex sm:flex-row flex-col w-[80%] mx-auto justify-around items-start mt-40">
-            <Image
-              src={settings.phoneGame1}
-              alt="Apple iPhone NFT"
-              className="block sm:hidden"
-            />
+            <div className="block sm:hidden">
+              <Image src={settings.phoneGame1} alt="Apple iPhone NFT" />
+            </div>
 
             <div className="bg-white rounded-[30px] shadow-lg sm:w-[45%] w-[100%] -translate-y-6 sm:translate-y-0 mx-auto p-8">
               <h1 className="sm:text-[50px] text-[30px] font-bold ">
@@ -254,16 +252,17 @@ const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
           </div>
 
           <div className="flex sm:w-[80%] w-[90%] mx-auto justify-around items-center mt-40">
-            <Image
-              src={settings.femaleNFTFight}
-              alt="Apple iphone NFT Female"
-              className="block sm:hidden w-[40%]"
-            />
-            <Image
-              src={settings.fightModels}
-              alt="Apple iPhone NFT"
-              className="hidden sm:block"
-            />
+            <div className="block sm:hidden ">
+              <Image
+                src={settings.femaleNFTFight}
+                alt="Apple iphone NFT Female"
+                className="w-[40%]"
+              />
+            </div>
+            <div className="hidden sm:block">
+              <Image src={settings.fightModels} alt="Apple iPhone NFT" />
+            </div>
+
             <div className="bg-white rounded-[30px] shadow-lg w-[60%] sm:w-[45%] sm:p-8 p-4">
               <h1 className="text-[30px] sm:text-[50px] font-bold ">
                 {locale?.trade}
@@ -403,16 +402,20 @@ const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
             <h1 className="text-[#05A3FF] text-[50px] font-bold my-10">
               {locale?.partners}
             </h1>
-            <Image
-              src={settings.partners}
-              alt="Partners"
-              className="text-center sm:block hidden"
-            />
-            <Image
-              src={settings.partnersMobile}
-              alt="Partners"
-              className="text-center sm:hiddend block"
-            />
+            <div className="sm:block hidden">
+              <Image
+                src={settings.partners}
+                alt="Partners"
+                className="text-center"
+              />
+            </div>
+            <div className="sm:hidden block">
+              <Image
+                src={settings.partnersMobile}
+                alt="Partners"
+                className="text-center"
+              />
+            </div>
           </PartnersGradBack>
 
           <div className="text-center mt-32 pb-4 sm:block hidden">
