@@ -256,7 +256,7 @@ const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
               <Image
                 src={settings.femaleNFTFight}
                 alt="Apple iphone NFT Female"
-                className="w-[40%]"
+                className="w-[70%]"
               />
             </div>
             <div className="hidden sm:block">
