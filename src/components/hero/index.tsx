@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import settings from "../../../config/settings.json"
-import Image from "../Image"
+import Image from "../image"
 import { ExpandedHeroTree } from "../../../lib/locales"
 import useLocales from "../../hooks/useLocales"
 import useHeroStatuses from "../../hooks/useHeroStatuses"

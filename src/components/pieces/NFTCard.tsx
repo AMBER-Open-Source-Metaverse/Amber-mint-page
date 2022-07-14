@@ -1,5 +1,5 @@
 import React from "react"
-import Image from "../Image"
+import Image from "../image"
 import settings from "../../../config/settings.json"
 
 const NFTCard = () => {
