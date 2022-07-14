@@ -4,10 +4,16 @@ import Image from "../Image"
 import useLocales from "../../hooks/useLocales"
 import styled from "styled-components"
 
-const PlayButton: React.FC<{}> = ({}) => {
+interface Props {
+  onClick: (e: React.MouseEvent<HTMLInputElement>) => void
+}
+const PlayButton: React.FC<Props> = props => {
   const { locale } = useLocales()
   return (
-    <ButtonContainer className="bg-white p-2 w-max flex justify-between items-center space-x-4 mx-auto md:mx-0 px-5">
+    <ButtonContainer
+      onClick={props.onClick}
+      className="bg-white p-2 w-max flex justify-between items-center space-x-4 mx-auto md:mx-0 px-5"
+    >
       <TextBox>
         <h4 className="text-[32px] font-semibold text-black">{locale?.play}</h4>
       </TextBox>

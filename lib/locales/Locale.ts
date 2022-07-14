@@ -158,4 +158,5 @@ export interface Locale {
   copywrite: string
   about: string
   vote: string
+  login: string
 }

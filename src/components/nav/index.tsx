@@ -5,6 +5,7 @@ import LoginButton from "../pieces/LoginButton"
 import useLocales from "../../hooks/useLocales"
 import Image from "../Image"
 import { Ul, Li } from "../pieces/List"
+import Dropdown from "../dropdown"
 import styled from "styled-components"
 
 function signOut() {
@@ -18,13 +19,21 @@ export default function Navbar() {
   if (!locale) return null
 
   return (
-    <Nav className="navbar py-8 px-10 pt-16 text-white absolute z-10">
-      <div className="left-[20px] sm:left-[5rem] flex-1 top-7 ml-[1rem] sm:ml-[3rem] lg:ml-[5.5rem] mt">
+    <Nav className="navbar py-8 px-3 sm:px-10 pt-16 text-white absolute z-10">
+      <div className="left-[20px] sm:left-[5rem] flex-1 top-7 ml-[0.5rem] sm:ml-[3rem] lg:ml-[5.5rem] mt">
         <a className="w-[154px]" href="#">
           <Image src={settings.logo} alt="logo" />
         </a>
       </div>
       <div className="lg:hidden flex-none">
+        {!currentUser ? (
+          <LoginButton onClick={signIn}>{locale.login}</LoginButton>
+        ) : (
+          <Dropdown
+            items={[{ children: locale.signOut, onSelect: signOut }]}
+            trigger={currentUser}
+          />
+        )}
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost btn-circle">
             <svg
@@ -42,39 +51,43 @@ export default function Navbar() {
               />
             </svg>
           </label>
+
           <ul
             tabIndex={0}
             className="menu dropdown-content absolute right-5 mt-3 p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li>
+              <a
+                href="#"
+                className="text-black text-xs gap-[0.4rem] text-right"
+              >
+                <span>{locale.mint}</span>
+              </a>
+            </li>
+            <li>
               <a href="#" className="text-black text-xs gap-[0.4rem]">
-                <Image
-                  src={settings.bookIcon}
-                  alt="whitepaper"
-                  className="w-[16px] h-[16px]"
-                />
+                <span>{locale.play}</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" className="text-black text-xs gap-[0.4rem]">
                 <span>{locale.whitepaper}</span>
               </a>
             </li>
             <li>
               <a href="#" className="text-black text-xs gap-[0.4rem]">
-                <Image
-                  src={settings.ideaIcon}
-                  alt="Tokenomics"
-                  className="w-[16px] h-[16px]"
-                />
                 <span>{locale.tokenomics}</span>
               </a>
             </li>
             <li>
-              <a href="#" className="text-black text-xs gap-[0.4rem]">
-                <Image
-                  src={settings.userIcon}
-                  alt="user"
-                  className="w-[16px] h-[16px]"
+              {!currentUser ? (
+                <LoginButton onClick={signIn}>{locale.login}</LoginButton>
+              ) : (
+                <Dropdown
+                  items={[{ children: locale.signOut, onSelect: signOut }]}
+                  trigger={currentUser}
                 />
-                <span>{locale.profile}</span>
-              </a>
+              )}
             </li>
           </ul>
         </div>
@@ -93,12 +106,11 @@ export default function Navbar() {
           </Li>
           <Li>
             {!currentUser ? (
-              <LoginButton>{locale.connectWallet}</LoginButton>
+              <LoginButton onClick={signIn}>{locale.connectWallet}</LoginButton>
             ) : (
-              <Image
-                src={settings.userIcon}
-                alt="user"
-                className="w-[16px] h-[16px]"
+              <Dropdown
+                items={[{ children: locale.signOut, onSelect: signOut }]}
+                trigger={currentUser}
               />
             )}
           </Li>

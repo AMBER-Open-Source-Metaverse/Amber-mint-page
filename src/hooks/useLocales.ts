@@ -37,6 +37,7 @@ export default function useLocales(): { locales: Locale[]; locale?: Locale } {
               langPicker
               siteTitle
               title
+              login
               description
               mint3DNFT
               billedOnce
