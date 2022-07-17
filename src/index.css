@@ -4,13 +4,23 @@
 
 @layer base {
   @font-face {
-    font-family: SF Pro Display;
+    font-family: "SF Pro Display";
     src: url(/fonts/SFPRODISPLAYREGULAR.OTF) format("opentype");
   }
 }
+/* 
+@font-face {
+  font-family: "SF Pro Display";
+  src: url(./assets/fonts/SFPRODISPLAYREGULAR.OTF) format("opentype");
+} */
+
+* {
+  font-family: "SF Pro Display";
+}
+
 body {
   margin: 0;
-  font-family: SF Pro Display;
+  font-family: "SF Pro Display";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
