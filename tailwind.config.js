@@ -9,6 +9,10 @@ module.exports = {
         background: "#F2F6FF",
         ampink: "#FFBCDD",
       },
+      fontFamily: {
+        headline: ["SF Pro Display"],
+        sans: ["SF Pro Display", "Helvetica", "Arial", "sans-serif"],
+      },
     },
   },
   plugins: [require("daisyui")],

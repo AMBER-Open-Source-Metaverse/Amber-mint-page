@@ -2,9 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  @font-face {
+    font-family: SF Pro Display;
+    src: url(/fonts/SFPRODISPLAYREGULAR.OTF) format("opentype");
+  }
+}
 body {
   margin: 0;
-  font-family: "SF Pro Display";
+  font-family: SF Pro Display;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -12,9 +18,4 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
-}
-
-@font-face {
-  font-family: "SF Pro Display";
-  src: url(../config/fonts/SFPRODISPLAYREGULAR.OTF);
 }
