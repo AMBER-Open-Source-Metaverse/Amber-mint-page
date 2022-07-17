@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("http://fonts.cdnfonts.com/css/sf-pro-display");
 
 body {
   margin: 0;
@@ -13,4 +12,9 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url(../config/fonts/SFPRODISPLAYREGULAR.OTF);
 }
