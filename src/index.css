@@ -1,11 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("http://fonts.cdnfonts.com/css/sf-pro-display");
 
+@layer base {
+  @font-face {
+    font-family: SF Pro Display;
+    src: url(/fonts/SFPRODISPLAYREGULAR.OTF) format("opentype");
+  }
+}
 body {
   margin: 0;
-  font-family: "SF Pro Display";
+  font-family: SF Pro Display;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
