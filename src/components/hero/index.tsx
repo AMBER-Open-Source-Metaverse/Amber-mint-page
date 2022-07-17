@@ -433,7 +433,7 @@ const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
                     fgColor="transparent"
                     bgColor="transparent"
                   >
-                    <FaDiscord className="w-[30px] m-auto mt-3 h-[30px] text-white" />
+                    <FaDiscord className="w-[30px] m-auto mt-[10px] h-[30px] text-white" />
                   </SocialIcon>
                   <SocialIcon
                     url="https://instagram.com"
