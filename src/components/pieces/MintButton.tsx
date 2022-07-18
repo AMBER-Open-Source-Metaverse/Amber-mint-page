@@ -4,10 +4,16 @@ import Image from "../image"
 import useLocales from "../../hooks/useLocales"
 import styled from "styled-components"
 
-const MintButton: React.FC<{}> = ({ ...props }) => {
+interface Props {
+  onClick: () => void
+}
+const MintButton: React.FC<Props> = ({ ...props }) => {
   const { locale } = useLocales()
   return (
-    <ButtonContainer className="bg-white p-2 w-max flex justify-between items-center space-x-4 mr-3 ">
+    <ButtonContainer
+      onClick={props.onClick}
+      className="bg-white p-2 w-max flex justify-between items-center space-x-4 mr-3 "
+    >
       <IconBox className="rounded-full">
         <div className="rounded-full p-[0.15rem] bg-white">
           <BlackCircle className="rounded-full p-2 bg-[#E3E8FF]">

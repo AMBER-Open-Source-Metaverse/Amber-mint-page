@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "author": "Chad Ostrowski <chad@ahalabs.dev>",
   "dependencies": {
+    "@material-tailwind/react": "^1.0.7",
     "@radix-ui/react-dropdown-menu": "0.1.6",
     "@radix-ui/react-slider": "^0.1.4",
     "add-to-calendar-button": "1.7.8",

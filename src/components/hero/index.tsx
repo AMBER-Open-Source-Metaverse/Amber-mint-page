@@ -5,14 +5,8 @@ import Image from "../image"
 import { ExpandedHeroTree } from "../../../lib/locales"
 import useLocales from "../../hooks/useLocales"
 import useHeroStatuses from "../../hooks/useHeroStatuses"
-import bgBlueCurve from "../../../config/images/bg-blue-curve.svg"
-import bgGradientCurve from "../../../config/images/bg-gradient-curve.svg"
-import bgGradientCurve2 from "../../../config/images/bg-gradient-curve-2.svg"
-import bgBlueCurve2 from "../../../config/images/bg-blue-curve-2.svg"
-import partnerBGCurve from "../../../config/images/partner-bg-red.svg"
-import bgRedCurve from "../../../config/images/bg-red-curve.svg"
-import bgRedEnd from "../../../config/images/bg-red-end.svg"
-import bgBlueEndLeft from "../../../config/images/bg-blue-end-left.svg"
+import { act, can, fill } from "../../../lib/locales/runtimeUtils"
+import { wallet } from "../../near"
 import MintButton from "../pieces/MintButton"
 import PlayButton from "../pieces/PlayButton"
 import SingleMintButton from "../pieces/SingleMintButton"
@@ -22,11 +16,44 @@ import { SocialIcon } from "react-social-icons"
 import { useState } from "react"
 import { FaDiscord } from "react-icons/fa"
 import { isMobile } from "react-device-detect"
+import useTenk from "../../hooks/useTenk"
+import NotLoggedIn from "../pieces/NotLoggedIn"
+import MintDialog from "../pieces/MintDialog"
+import bgBlueCurve from "../../../config/images/bg-blue-curve.svg"
+import bgGradientCurve from "../../../config/images/bg-gradient-curve.svg"
+import bgGradientCurve2 from "../../../config/images/bg-gradient-curve-2.svg"
+import bgBlueCurve2 from "../../../config/images/bg-blue-curve-2.svg"
+import partnerBGCurve from "../../../config/images/partner-bg-red.svg"
+import bgRedCurve from "../../../config/images/bg-red-curve.svg"
+import bgRedEnd from "../../../config/images/bg-red-end.svg"
+import bgBlueEndLeft from "../../../config/images/bg-blue-end-left.svg"
+
+const curUser = wallet.getAccountId()
 
 const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
   const { locale } = useLocales()
   const { saleStatus, userStatus } = useHeroStatuses()
+
+  console.log(curUser, saleStatus, userStatus)
+  const tenkData = useTenk()
+  console.log("TENK_____DATA", tenkData)
+  console.log("HERO____TREE", heroTree)
+  const hero = heroTree[saleStatus][userStatus]
+  console.log("HERO", hero)
   const [checked, setChecked] = useState(true)
+  const [numberToMint, setNumberToMint] = useState(1)
+  const [loggedStatus, setLoggedStatus] = useState(false)
+  const [mintBtnClicked, setMintBtnClicked] = useState(false)
+
+  if (!locale) return null
+
+  const data = {
+    ...tenkData,
+    curUser,
+    locale,
+    saleStatus,
+    userStatus,
+  }
 
   const onPlayGame = (eve: React.MouseEvent<HTMLInputElement>) => {
     !isMobile
@@ -38,8 +65,23 @@ const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
     setChecked(eve.target.checked)
   }
 
+  const onMintNFT = (): void => {
+    console.log("Hi")
+    if (!curUser) {
+      console.log("not logged in")
+      setLoggedStatus(true)
+    } else {
+      setMintBtnClicked(true)
+    }
+    // can(hero.action, data) && act(hero.action, { ...data, numberToMint })
+  }
+
   return (
     <div className="bg-slate-100">
+      {/* //Modal dialog */}
+
+      <NotLoggedIn open={loggedStatus} />
+      <MintDialog open={mintBtnClicked} />
       <div
         style={{
           backgroundImage: `url(${bgGradientCurve})`,
@@ -73,7 +115,7 @@ const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
                   {locale?.description}
                 </p>
                 <div className="flex">
-                  <MintButton />
+                  <MintButton onClick={onMintNFT} />
                   <PlayButton onClick={onPlayGame} />
                 </div>
               </div>
@@ -91,7 +133,7 @@ const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
                 <SingleMintButton className="bg-white p-2 w-max flex justify-between items-center space-x-4 mx-auto md:mx-0 px-5 absolute bottom-3 sm:-right-10 -right-2  " />
               </div>
               <div className="flex lg:hidden ">
-                <MintButton />
+                <MintButton onClick={onMintNFT} />
                 <PlayButton onClick={onPlayGame} />
               </div>
             </div>
