@@ -4,7 +4,11 @@ import Image from "../image"
 import useLocales from "../../hooks/useLocales"
 import styled from "styled-components"
 
-const SingleMintButton: React.FC<{}> = ({ ...props }) => {
+interface Props {
+  className: string
+}
+
+const SingleMintButton: React.FC<Props> = ({ ...props }) => {
   const { locale } = useLocales()
   return (
     <ButtonContainer {...props}>
