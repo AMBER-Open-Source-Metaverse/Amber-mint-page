@@ -1,9 +1,10 @@
 import * as React from "react"
 import { Link, navigate } from "gatsby"
-
+import { ToastContainer } from "react-toastify"
 import useLocales from "../hooks/useLocales"
 import Layout from "../components/layout"
 import "../index.css"
+import "react-toastify/dist/ReactToastify.css"
 
 const IndexPage = () => {
   const { locales } = useLocales()
@@ -31,6 +32,7 @@ const IndexPage = () => {
           <Link to={`/${locale.id}/`}>{locale.viewIn}</Link>
         </p>
       ))}
+      <ToastContainer />
     </Layout>
   )
 }

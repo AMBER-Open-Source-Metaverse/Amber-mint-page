@@ -27,7 +27,6 @@ import partnerBGCurve from "../../../config/images/partner-bg-red.svg"
 import bgRedCurve from "../../../config/images/bg-red-curve.svg"
 import bgRedEnd from "../../../config/images/bg-red-end.svg"
 import bgBlueEndLeft from "../../../config/images/bg-blue-end-left.svg"
-
 const curUser = wallet.getAccountId()
 
 const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
@@ -76,12 +75,26 @@ const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
     // can(hero.action, data) && act(hero.action, { ...data, numberToMint })
   }
 
+  const handleOpenMintDlg = () => {
+    console.log(mintBtnClicked)
+    setMintBtnClicked(prev => !prev)
+  }
+
+  const [open, setOpen] = useState(false)
+
+  const handleOpen = value => setOpen(!open)
+
   return (
     <div className="bg-slate-100">
       {/* //Modal dialog */}
 
       <NotLoggedIn open={loggedStatus} />
-      <MintDialog open={mintBtnClicked} />
+      <MintDialog
+        open={mintBtnClicked}
+        handleOpen={handleOpenMintDlg}
+        mintRateLimit={tenkData.mintRateLimit}
+        mintPrice={tenkData.saleInfo.price}
+      />
       <div
         style={{
           backgroundImage: `url(${bgGradientCurve})`,
