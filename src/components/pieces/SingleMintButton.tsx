@@ -6,12 +6,13 @@ import styled from "styled-components"
 
 interface Props {
   className: string
+  onClick: () => void
 }
 
 const SingleMintButton: React.FC<Props> = ({ ...props }) => {
   const { locale } = useLocales()
   return (
-    <ButtonContainer {...props}>
+    <ButtonContainer {...props} onClick={props.onClick}>
       <TextBox>
         <h4 className="text-[32px] font-semibold text-black">{locale?.mint}</h4>
       </TextBox>

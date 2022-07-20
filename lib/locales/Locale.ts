@@ -159,4 +159,5 @@ export interface Locale {
   about: string
   vote: string
   login: string
+  search: string
 }

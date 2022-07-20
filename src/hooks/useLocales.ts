@@ -74,6 +74,7 @@ export default function useLocales(): { locales: Locale[]; locale?: Locale } {
               sorry
               sorryDesc
               goBack
+              search
               playAmberGame
               getFullownership
               receivingRareNFT

@@ -1,15 +1,15 @@
-import React from "react"
+import React, { RefObject, useRef } from "react"
 import styled from "styled-components"
 import settings from "../../../config/settings.json"
 import Image from "../image"
 import { ExpandedHeroTree } from "../../../lib/locales"
 import useLocales from "../../hooks/useLocales"
 import useHeroStatuses from "../../hooks/useHeroStatuses"
+import { ToastContainer } from "react-toastify"
 import { act, can, fill } from "../../../lib/locales/runtimeUtils"
 import { wallet } from "../../near"
 import MintButton from "../pieces/MintButton"
 import PlayButton from "../pieces/PlayButton"
-import SingleMintButton from "../pieces/SingleMintButton"
 import Checkbox from "../pieces/Checkbox"
 import Slider from "../pieces/Slider"
 import { SocialIcon } from "react-social-icons"
@@ -19,6 +19,7 @@ import { isMobile } from "react-device-detect"
 import useTenk from "../../hooks/useTenk"
 import NotLoggedIn from "../pieces/NotLoggedIn"
 import MintDialog from "../pieces/MintDialog"
+import CharacterModel from "../pieces/Three"
 import bgBlueCurve from "../../../config/images/bg-blue-curve.svg"
 import bgGradientCurve from "../../../config/images/bg-gradient-curve.svg"
 import bgGradientCurve2 from "../../../config/images/bg-gradient-curve-2.svg"
@@ -27,6 +28,8 @@ import partnerBGCurve from "../../../config/images/partner-bg-red.svg"
 import bgRedCurve from "../../../config/images/bg-red-curve.svg"
 import bgRedEnd from "../../../config/images/bg-red-end.svg"
 import bgBlueEndLeft from "../../../config/images/bg-blue-end-left.svg"
+import "react-toastify/dist/ReactToastify.css"
+import Congratulation from "../pieces/Congratulation"
 
 const curUser = wallet.getAccountId()
 
@@ -44,12 +47,15 @@ const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
   const [numberToMint, setNumberToMint] = useState(1)
   const [loggedStatus, setLoggedStatus] = useState(false)
   const [mintBtnClicked, setMintBtnClicked] = useState(false)
-
+  const [mintSuccessDlg, setMintSuccessDlg] = useState(false)
+  const sliderRef = useRef(null)
+  const lastMintItem = tenkData.nftsForOwner.at(-1)
+  console.log("Last mint item", lastMintItem)
   if (!locale) return null
 
   const data = {
     ...tenkData,
-    curUser,
+    currentUser: curUser,
     locale,
     saleStatus,
     userStatus,
@@ -65,23 +71,56 @@ const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
     setChecked(eve.target.checked)
   }
 
-  const onMintNFT = (): void => {
-    console.log("Hi")
+  const onMintDlg = (): void => {
     if (!curUser) {
-      console.log("not logged in")
       setLoggedStatus(true)
     } else {
       setMintBtnClicked(true)
     }
-    // can(hero.action, data) && act(hero.action, { ...data, numberToMint })
+  }
+
+  const onSetMintedNumber = (num: number) => {
+    console.log(num)
+    setNumberToMint(num)
+  }
+
+  const mintAvatar = () => {
+    console.log("Mint avatar!", numberToMint)
+    console.log(can(hero.action, data))
+    can(hero.action, data) && act(hero.action, { ...data, numberToMint })
+  }
+
+  const handleOpenMintDlg = () => {
+    setMintBtnClicked(prev => !prev)
+  }
+
+  const handleOpenNotDlg = () => {
+    setLoggedStatus(prev => !prev)
+  }
+
+  const handleOpenSuccessDlg = () => {
+    setMintSuccessDlg(prev => !prev)
   }
 
   return (
     <div className="bg-slate-100">
       {/* //Modal dialog */}
-
-      <NotLoggedIn open={loggedStatus} />
-      <MintDialog open={mintBtnClicked} />
+      <ToastContainer className="z-[200000]" />
+      <NotLoggedIn open={loggedStatus} handleOpen={handleOpenNotDlg} />
+      <MintDialog
+        open={mintBtnClicked}
+        handleOpen={handleOpenMintDlg}
+        mintRateLimit={tenkData.mintRateLimit}
+        mintPrice={Number(tenkData.saleInfo.price)}
+        mintAvatar={mintAvatar}
+        setNumberToMint={onSetMintedNumber}
+      />
+      <Congratulation
+        open={mintSuccessDlg}
+        handleOpen={handleOpenSuccessDlg}
+        media={lastMintItem?.media || undefined}
+        id={lastMintItem?.token_id || undefined}
+      />
       <div
         style={{
           backgroundImage: `url(${bgGradientCurve})`,
@@ -104,6 +143,7 @@ const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
                 backgroundColor: "rgba(217, 217, 217, 0.01)",
               }}
             >
+              {/* {fill(hero.remaining, data)} */}
               <h1 className="lg:text-[54px] sm:text-[40px] text-[30px] leading-tight font-semibold text-white scale-y-105 lg:hidden text-center mt-[84px]">
                 {locale?.title}
               </h1>
@@ -115,25 +155,20 @@ const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
                   {locale?.description}
                 </p>
                 <div className="flex">
-                  <MintButton onClick={onMintNFT} />
+                  <MintButton onClick={onMintDlg} />
                   <PlayButton onClick={onPlayGame} />
                 </div>
               </div>
               <div className="relative">
-                <Image
-                  src={settings.femaleNft}
-                  alt="nft-demo"
-                  className="sm:h-[80vh] h-[70vh] sm:mt-20 mt-0"
-                />
+                <CharacterModel />
                 <Image
                   src={settings.cycle}
                   alt="Cycle-Image"
                   className="h-[22px] w-[35.8px] absolute bottom-6 sm:bottom-4 left-20 sm:right-24"
                 />
-                <SingleMintButton className="bg-white p-2 w-max flex justify-between items-center space-x-4 mx-auto md:mx-0 px-5 absolute bottom-3 sm:-right-10 -right-2  " />
               </div>
               <div className="flex lg:hidden ">
-                <MintButton onClick={onMintNFT} />
+                <MintButton onClick={onMintDlg} />
                 <PlayButton onClick={onPlayGame} />
               </div>
             </div>
@@ -195,13 +230,23 @@ const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
           <div className="mx-auto w-full sm:w-[80%] bg-transparent">
             <div className="pt-12 flex justify-between text-center lg:text-start px-16">
               <div className="w-[100%] lg:w-[50%] space-y-4">
-                <h1 className="text-3xl font-bold">{locale?.recentlyMinted}</h1>
+                <h1 className="text-3xl font-bold">
+                  {locale?.recentlyMinted}
+                  <span className="text-[1rem]">
+                    &nbsp;(
+                    {tenkData?.saleInfo.token_final_supply +
+                      "/" +
+                      tenkData?.tokensLeft}
+                    )
+                  </span>
+                </h1>
                 <div className="flex items-center justify-center lg:justify-start space-x-8">
                   <button
                     className="btn btn-sm bg-white btn-outline capitalize rounded-2xl text-xs gap-1 font-bold"
                     style={{
                       border: "1px solid rgba(57, 19, 184, 0.2)",
                     }}
+                    onClick={() => sliderRef?.current?.slickPrev()}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -224,6 +269,7 @@ const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
                     style={{
                       border: "1px solid rgba(57, 19, 184, 0.2)",
                     }}
+                    onClick={() => sliderRef?.current?.slickNext()}
                   >
                     {locale?.nextNFT}
                     <svg
@@ -249,7 +295,7 @@ const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
                 </p>
               </div>
             </div>
-            <Slider />
+            <Slider images={tenkData?.nftsMinted} forwardedRef={sliderRef} />
           </div>
 
           <div className="flex w-[90%] sm:w-[80%] mx-auto justify-around items-start mt-40">
@@ -433,7 +479,7 @@ const Hero: React.FC<{ heroTree: ExpandedHeroTree }> = ({ heroTree }) => {
                   </div>
                 </div>
                 <div className="flex justify-end mt-5">
-                  <MintButton />
+                  <MintButton onClick={onMintDlg} />
                   <PlayButton onClick={onPlayGame} />
                 </div>
               </div>
