@@ -11,39 +11,65 @@ import Image from "../image"
 import useLocales from "../../hooks/useLocales"
 import styled from "styled-components"
 import { toast } from "react-toastify"
+import SingleMintButton from "../pieces/SingleMintButton"
 
 interface Props {
   open: boolean
   handleOpen: () => void
   mintRateLimit: number
   mintPrice: number
+  mintAvatar: () => void
+  setNumberToMint: (numberToMint: number) => void
 }
 
 const MintDialog = (props: Props) => {
   const { locale } = useLocales()
   const [mintNumber, setMintNumber] = useState(1)
   const mintPrice = props.mintPrice / Math.pow(10, 24)
-  console.log(locale)
+
   const handleOpen = () => {
     console.log(props.open)
     props.handleOpen()
   }
 
   const controlClicked = (eve: React.MouseEvent, type: number) => {
-    if (mintNumber > props.mintRateLimit) {
-      toast(`You can't mint over ${props.mintRateLimit}`)
+    if (type == 1 && mintNumber >= props.mintRateLimit) {
+      toast(`You can't mint over ${props.mintRateLimit}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      })
+      return
+    } else if (type == 2 && mintNumber <= 1) {
+      toast(`You can't mint 0`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      })
       return
     }
-    type == 1
-      ? setMintNumber(prev => prev + 1)
-      : setMintNumber(prev => prev - 1)
+    if (type == 1) {
+      props.setNumberToMint(mintNumber + 1)
+      setMintNumber(prev => prev + 1)
+    } else if (type == 2) {
+      props.setNumberToMint(mintNumber - 1)
+      setMintNumber(prev => prev - 1)
+    }
   }
 
   return (
     <Dialog
       open={props.open}
       handler={handleOpen}
-      className={"rounded-[30px] px-4 py-8"}
+      className={"rounded-[30px] px-4 py-8  sm:w-2/5 w-10/12 max-w-full"}
     >
       <DialogHeader className="justify-center">
         {locale?.mintAvatar}
@@ -82,18 +108,11 @@ const MintDialog = (props: Props) => {
           <label>{mintPrice * mintNumber} Near</label>
         </div>
       </DialogBody>
-      <DialogFooter>
-        <Button
-          variant="text"
-          color="red"
-          onClick={handleOpen}
-          className="mr-1"
-        >
-          <span>Cancel</span>
-        </Button>
-        <Button variant="gradient" color="green" onClick={handleOpen}>
-          <span>Confirm</span>
-        </Button>
+      <DialogFooter className="!justify-center">
+        <SingleMintButton
+          onClick={props.mintAvatar}
+          className="bg-white p-2 w-max flex justify-between items-center space-x-4 mx-auto md:mx-0 px-5  "
+        />
       </DialogFooter>
     </Dialog>
   )

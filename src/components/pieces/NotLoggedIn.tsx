@@ -8,62 +8,61 @@ import {
 } from "@material-tailwind/react"
 import settings from "../../../config/settings.json"
 import Image from "../image"
+import { signIn } from "../../near"
 import useLocales from "../../hooks/useLocales"
 import styled from "styled-components"
 
 interface Props {
   open: boolean
+  handleOpen: () => void
 }
 
 const NotLoggedIn = (props: Props) => {
-  const [open, setOpen] = useState(props.open)
-  console.log("HEY")
-  console.log(props.open)
-  const handleOpen = () => setOpen(!open)
+  const { locale } = useLocales()
+  const handleOpen = () => {
+    console.log(props.open)
+    props.handleOpen()
+  }
+
+  const onDownload = () => {
+    window.location.replace("https://testflight.apple.com/join/KHYIS8no")
+  }
 
   return (
-    <Fragment>
-      <Dialog open={open} handler={handleOpen}>
-        <DialogHeader>Its a simple dialog.</DialogHeader>
-        <DialogBody divider>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus ad
-          reprehenderit omnis perspiciatis aut odit! Unde architecto
-          perspiciatis, dolorum dolorem iure quia saepe autem accusamus eum
-          praesentium magni corrupti explicabo!
-        </DialogBody>
-        <DialogFooter>
-          <Button
-            variant="text"
-            color="red"
-            onClick={handleOpen}
-            className="mr-1"
-          >
-            <span>Cancel</span>
-          </Button>
-          <Button variant="gradient" color="green" onClick={handleOpen}>
-            <span>Confirm</span>
-          </Button>
-        </DialogFooter>
-      </Dialog>
-    </Fragment>
+    <Dialog
+      open={props.open}
+      handler={handleOpen}
+      className="rounded-[30px] py-6"
+    >
+      <DialogHeader className="!justify-center">
+        <h1 className="text-3xl">{locale?.notLoggedIn}</h1>
+      </DialogHeader>
+      <DialogBody className="flex-col py-4 px-24">
+        <BlueButton className="rounded-full" onClick={signIn}>
+          <h1 className="tracking-[2px] !normal-case">
+            {locale?.connectWallet}
+          </h1>
+        </BlueButton>
+        <BlueButton className="rounded-full">
+          <h1 className="tracking-[2px] !normal-case">
+            {locale?.continueAsGuest}
+          </h1>
+        </BlueButton>
+        <BlueButton className="rounded-full" onClick={onDownload}>
+          <h1 className="tracking-[2px] !normal-case">{locale?.download}</h1>
+        </BlueButton>
+      </DialogBody>
+    </Dialog>
   )
 }
 
 export default NotLoggedIn
 
-const Login = styled.div`
-  border-radius: 20px;
-  width: 40%;
-  background-color: rgb(126, 112, 112);
-  text-align: center;
-  padding: 20px;
-`
-
-const Type = styled.div`
-  margin: auto;
-  background-image: linear-gradient(to right, #2eb5ff, #6acaff);
-  border-radius: 20px;
-  width: 60%;
-  color: white;
-  text-align: center;
+const BlueButton = styled(Button)`
+  border-radius: 22px;
+  margin: 5px 0;
+  letter-spacing: 
+  text-transform: none !important;
+  background-origin: border-box;
+  background-image: linear-gradient(60%, #2ab4ff, #6fccff);
 `

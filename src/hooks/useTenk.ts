@@ -1,12 +1,16 @@
 import React from "react"
-import { NftContractMetadata, SaleInfo, Token as RawToken } from "../near/contracts/tenk"
+import {
+  NftContractMetadata,
+  SaleInfo,
+  Token as RawToken,
+} from "../near/contracts/tenk"
 import { TENK } from "../near/contracts"
 import { wallet } from "../near"
 import staleData from "../../stale-data-from-build-time.json"
 
 const account_id = wallet.getAccountId()
 
-type Token = RawToken & {
+export type Token = RawToken & {
   media: string
 }
 
@@ -14,7 +18,8 @@ export interface TenkData {
   contractMetadata?: NftContractMetadata
   remainingAllowance?: number
   mintRateLimit: number
-  nfts: Token[]
+  nftsForOwner: Token[]
+  nftsMinted: Token[]
   saleInfo: SaleInfo
   tokensLeft: number
   vip: boolean
@@ -33,6 +38,7 @@ const rpcCalls = Promise.all([
   !account_id ? undefined : TENK.whitelisted({ account_id }),
   !account_id ? undefined : TENK.remaining_allowance({ account_id }),
   !account_id ? undefined : TENK.nft_tokens_for_owner({ account_id }),
+  !account_id ? undefined : TENK.nft_tokens({}),
   !account_id ? undefined : TENK.mint_rate_limit({ account_id }),
 ])
 
@@ -45,8 +51,9 @@ export async function rpcData(): Promise<TenkData> {
     tokensLeft,
     vip,
     remainingAllowance,
-    nfts,
-    mintRateLimit
+    nftsForOwner,
+    nftsMinted,
+    mintRateLimit,
   ] = await rpcCalls
   return {
     saleInfo,
@@ -54,17 +61,30 @@ export async function rpcData(): Promise<TenkData> {
     tokensLeft,
     vip: vip ?? false,
     remainingAllowance: remainingAllowance ?? undefined,
-    nfts: nfts?.map(nft => ({ ...nft,
-      media: new URL(nft.metadata?.media ?? '', contractMetadata.base_uri ?? '').href
-    })) ?? [],
+    nftsForOwner:
+      nftsForOwner?.map(nft => ({
+        ...nft,
+        media: new URL(
+          nft.metadata?.media ?? "",
+          contractMetadata.base_uri ?? ""
+        ).href,
+      })) ?? [],
+    nftsMinted:
+      nftsMinted?.map(nft => ({
+        ...nft,
+        media: new URL(
+          nft.metadata?.media ?? "",
+          contractMetadata.base_uri ?? ""
+        ).href,
+      })) ?? [],
     mintRateLimit: mintRateLimit ?? 10,
   }
 }
 
 export default function useTenk(): ReturnedData {
   const [data, setData] = React.useState<ReturnedData>({
-    ...staleData as unknown as TenkData,
-    stale: true
+    ...(staleData as unknown as TenkData),
+    stale: true,
   })
 
   React.useEffect(() => {
