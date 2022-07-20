@@ -7,6 +7,7 @@
   "description": "AMBER is a Metaverse and NFT game with a variety of battle modes in which NFTs are your digital property: characters, weapons, vehicles, real estate, land. The first 8888 unique 3D NFT avatars are your entry into a new virtual game world, your blockchain soul",
   "mint3DNFT": "MINT 3D NFT AVATAR",
   "billedOnce": "N8, billed once",
+
   "recentlyMinted": "Recently minted",
   "mint": "Mint",
   "play": "Play",
@@ -65,6 +66,7 @@
   "copywrite": "©2021 NFT Innovation. All rights reserved.",
   "about": "About",
   "vote": "vote",
+  "search": "Search",
 
   "nextNFT": "Next",
   "prevNFT": "Prev",
@@ -83,7 +85,6 @@
   "close": "Close",
   "zoomIn": "Zoom In",
   "zoomOut": "Zoom Out",
-  "search": "Search",
   "hero": {
     "video": "3d_toys_playground.mp4",
     "title": "NFTs drop at SALE_START!",
